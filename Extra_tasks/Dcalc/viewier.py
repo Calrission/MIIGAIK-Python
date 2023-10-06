@@ -1,7 +1,7 @@
 from Extra_tasks.Dcalc.dcalc import deg_to_gms
 
 
-def compare_points_gms(*args, **kwargs) -> list[str]:
+def convert_degrees_to_gms(*args, **kwargs) -> list[str]:
     """
     :param args: набор десятичных градусов, который будет добавлен в начало набора именованных градусов (kwargs)
     с именами по шаблону "Point_{i}", где i - индекс градуса в args
@@ -14,4 +14,4 @@ def compare_points_gms(*args, **kwargs) -> list[str]:
 
 
 if __name__ == "__main__":
-    print(compare_points_gms(172.25899161, 321.42304971, 12.697987681352, pole=21.89617856, put=140.85706440))
+    print(convert_degrees_to_gms(172.25899161, 321.42304971, 12.697987681352, pole=21.89617856, put=140.85706440))
