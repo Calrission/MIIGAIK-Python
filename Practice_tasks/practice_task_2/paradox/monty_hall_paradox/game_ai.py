@@ -1,5 +1,5 @@
 from enum import Enum
-from Practice_tasks.practice_task_1.monty_hall_paradox.game import Game, choice
+from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.game import Game, choice
 
 
 class TypeResult(Enum):

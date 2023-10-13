@@ -1,4 +1,4 @@
-from Practice_tasks.practice_task_1.monty_hall_paradox.game_ai import TypeResult
+from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.game_ai import TypeResult
 
 """
 Класс анализатора статистических данных

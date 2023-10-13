@@ -1,5 +1,5 @@
-from Practice_tasks.practice_task_1.monty_hall_paradox.analyst import Analyst
-from Practice_tasks.practice_task_1.monty_hall_paradox.game_ai import GameAI
+from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.analyst import Analyst
+from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.game_ai import GameAI
 
 
 def monty_hall(n: int):
