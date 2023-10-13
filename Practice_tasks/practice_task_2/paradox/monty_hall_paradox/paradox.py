@@ -2,11 +2,14 @@ from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.analyst import An
 from Practice_tasks.practice_task_2.paradox.monty_hall_paradox.game_ai import GameAI
 
 
-def monty_hall(n: int):
+def monty_hall(n: int) -> str:
     """
     Функция запуска симуляции для проверки парадокса.
     Результат n-го кол-ва само-игр компьютера заносится в анализатор.
-    В конце симуляции анализатор выводит статистику в консоль, где прописаны вероятности побед при разных стратегиях.
+    В конце симуляции анализатор возвращает статистику в консоль,
+    где прописаны вероятности побед при разных стратегиях.
+    :param n: Кол-во само-игр компьютера.
+    :return: Статистика в виде строки
     """
     analyst = Analyst()
     game = GameAI()
