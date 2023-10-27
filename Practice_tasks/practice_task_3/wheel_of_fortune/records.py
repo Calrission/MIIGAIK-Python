@@ -1,9 +1,11 @@
 import os
 
+from Practice_tasks.practice_task_3.wheel_of_fortune.utils import slash
+
 
 class Records:
     def __init__(self):
-        self.__path = "\\".join(__file__.split("\\")[:-1] + ["records.txt"])
+        self.__path = slash().join(__file__.split(slash())[:-1] + ["records.txt"])
         if not os.path.exists(self.__path):
             open(self.__path, mode="w").close()
 

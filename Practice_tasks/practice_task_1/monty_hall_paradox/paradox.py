@@ -21,4 +21,4 @@ def monty_hall(n: int):
 
 
 if __name__ == "__main__":
-    print(monty_hall(10000))
+    print(monty_hall(int(input())))
