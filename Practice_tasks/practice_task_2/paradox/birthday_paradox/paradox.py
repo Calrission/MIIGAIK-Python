@@ -3,9 +3,9 @@ from Practice_tasks.practice_task_2.paradox.birthday_paradox.models import Group
 
 def birthday(count_groups: int, count_first: int, count_second: int) -> str:
     """
-    Проверка парадокса:
+    Проверка парадокса Дней Рождения:
     Генерируем две группы с днями рождения и считаем вероятность наличия хотя бы одной пары
-    одинаковых дней рождения в одной группе.
+    одинаковых дней рождения в каждой группе.
     :return: Вероятности
     :param count_groups: Кол-во генерируемых групп для одного типа (с 60-ю и с 23-я)
     :param count_first: Кол-во людей в первой группе
