@@ -12,6 +12,8 @@ def read_file(file_name: str) -> list[int]:
         print(f"{file_name} не существует")
     except IOError:
         print("IO ошибка")
+    except ValueError:
+        print("Содержимое файла некорректной структуры")
     except:
         print("Другие ошибки")
     finally:
