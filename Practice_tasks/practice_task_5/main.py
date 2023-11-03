@@ -7,7 +7,7 @@ def read_file(file_name: str) -> list[int]:
             num = int(i)
             nums.append(num)
         file.close()
-        return nums
+        return nums[1:]
     except FileNotFoundError:
         print(f"{file_name} не существует")
     except IOError:
