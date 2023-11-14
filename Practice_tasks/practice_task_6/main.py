@@ -1,4 +1,5 @@
 from Practice_tasks.practice_task_6.models import *
+import re
 
 
 def read_file(file_name: str) -> list[str]:
@@ -12,7 +13,16 @@ def write_file(file_name: str, data: list[str]):
 
 
 def parse_lines(data: list[str]) -> list[LogItem]:
-    return [LogItem.from_text(line) for line in data]
+    return [
+        LogItem.from_text(line) for line in data
+        if re.match(r"Рейс \d\d\d (прибыл из|отправился в) [А-Я]\w+ в \d\d:\d\d:\d\d", line)
+    ]
+
+
+def main(input_file: str, output_file: str):
+    lines = read_file(input_file)
+    logs = parse_lines(lines)
+    write_file(output_file, list(map(str, logs)))
 
 
 if __name__ == "__main__":
@@ -24,6 +34,4 @@ if __name__ == "__main__":
     if output_file_name == "":
         output_file_name = "result.txt"
 
-    lines = read_file(input_file_name)
-    logs = parse_lines(lines)
-    write_file(output_file_name, list(map(str, logs)))
+    main(input_file_name, output_file_name)
