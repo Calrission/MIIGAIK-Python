@@ -4,11 +4,14 @@ from typing import Callable
 from .compressor import compress
 from .converter import convert_docx_to_pdf, convert_pdf_to_docx
 from .directory import show_current_directory, change_directory, get_files, change_format_file, get_file_path, \
-    append_postfix_filename, get_format_file, remove_format
+    append_postfix_file, get_format_file, remove_format
 from os import remove
 
 
 def item_menu_change_current_directory():
+    """
+    Пункт главного меню для смены директории
+    """
     inp_user = input_with_exit("Укажите корректный путь к рабочему каталогу")
     if inp_user is None:
         return
@@ -16,6 +19,12 @@ def item_menu_change_current_directory():
 
 
 def item_menu_convert(inp: str, out: str, converter):
+    """
+    Пункт главного меню для конвертаций
+    :param inp: из чего конвертировать
+    :param out: в что конвертировать
+    :param converter: функция конвертирования
+    """
     files = get_files(format_file=[inp])
 
     def fun(index_file: int):
@@ -29,12 +38,15 @@ def item_menu_convert(inp: str, out: str, converter):
 
 
 def item_menu_compress_image():
+    """
+    Пункт главного меню для сжатия изображения
+    """
     formats = ["png", "jpg", "jpeg", "gif"]
     files = get_files(formats)
 
     def fun(index_file: int):
         file_path = get_file_path(files[index_file])
-        output_file_path = append_postfix_filename(file_path, "_compress")
+        output_file_path = append_postfix_file(file_path, "_compress")
         while True:
             try:
                 inp = input_with_exit("Введите параметр сжатия (от 0 до 100%)")
@@ -55,12 +67,19 @@ def item_menu_compress_image():
 
 
 def item_menu_delete_group_files():
+    """
+    Пункт главного меню для группового удаления файлов
+    """
     files = get_files([])
     if len(files) == 0:
         print("Файлы в текущей директории отсутствуют!")
         return
 
-    def delete_file_substring(validation_fun):
+    def delete_file_substring(validation_fun: Callable):
+        """
+        Пункт подменю группового удаления для удаления по подстроке
+        :param validation_fun: функция валидации, принимающая имя файла и подстроку
+        """
         substring = input("Введите подстроку: ").lower()
         target_files = [file for file in files if validation_fun(remove_format(file.lower()), substring)]
         if len(target_files) == 0:
@@ -69,11 +88,18 @@ def item_menu_delete_group_files():
         delete_files(target_files)
 
     def delete_file_format():
+        """
+        Пункт подменю группового удаления для удаления по расширению
+        """
         format_file = input("Введите формат файлов: ")
         target_files = [file for file in files if get_format_file(file) == format_file]
         delete_files(target_files)
 
     def delete_files(target_files: list[str]):
+        """
+        Удаление списка файлов
+        :param target_files: список файлов
+        """
         for file in target_files:
             path_file = get_file_path(file)
             remove(path_file)
@@ -116,21 +142,36 @@ menu = {
 
 
 def show_main_menu():
+    """
+    Показать главное меню
+    """
     show_menu(menu)
 
 
 def show_menu(local_menu: dict):
+    """
+    Показать меню
+    :param local_menu: меню в виде словаря 
+    """
     print("-" * 15 + "МЕНЮ" + "-" * 15)
     show_current_directory()
     print("\n".join(f"{i}. {e}" for i, e in enumerate(local_menu)))
 
 
-def choose():
+def choose_main_menu():
+    """
+    Предоставить выбор пункта из главного меню
+    """
     func_item_menu, _ = safe_choose_item_menu(menu)
     func_item_menu()
 
 
 def safe_choose_item_menu(local_menu: dict[str, Callable[[], None]]) -> (Callable[[], None], int):
+    """
+    Безопасное получение пункта выбранного пользователем
+    :param local_menu: меню для выбора
+    :return: функция меню пункта, которого выбрал пользователь
+    """
     while True:
         try:
             usr_input = input("Введите индекс пункта меню: ")
@@ -145,6 +186,11 @@ def safe_choose_item_menu(local_menu: dict[str, Callable[[], None]]) -> (Callabl
 
 
 def input_with_exit(text: str) -> str | None:
+    """
+    Пользовательский ввод с возможностью отмены (exit)
+    :param text: текст для input
+    :return: текст пользователя или None в случаях выхода
+    """
     usr_input = input(f"{text} (exit - для выхода): ")
     if usr_input == "exit":
         return None
