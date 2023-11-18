@@ -35,11 +35,18 @@ def change_format_file(file: str, new_format: str) -> str:
     return file[:file.rfind(".") + 1] + new_format
 
 
+def append_postfix_filename(file: str, postfix: str) -> str:
+    parts = file.split(slash_platform)
+    filename = parts[-1]
+    filename = filename[:filename.rfind(".")] + postfix + filename[filename.rfind("."):]
+    return slash_platform.join(parts[:-1] + [filename])
+
+
 def get_file_path(filename: str):
     return f"{current_directory}{slash_platform}{filename}"
 
 
-def get_files(format_file: str) -> list[str]:
+def get_files(format_file: list) -> list[str]:
     files = listdir(current_directory)
     return [
         file for file in files
@@ -57,7 +64,7 @@ def is_valid_directory(directory_path: str) -> bool:
     return True
 
 
-def is_valid_file(file_path: str, file_format: str = "", show_errors: bool = True) -> bool:
+def is_valid_file(file_path: str, file_format: list, show_errors: bool = True) -> bool:
     def print_error(*errors):
         if show_errors:
             print(*errors)
@@ -68,11 +75,11 @@ def is_valid_file(file_path: str, file_format: str = "", show_errors: bool = Tru
     if not is_file(file_path):
         print_error(f"Ошибка! Путь {file_path} указывает не на файл")
         return False
-    if file_format != "":
+    if len(file_format) != 0:
         if not is_exist_format_file(file_path):
             print_error(f"Файл {file_path} не имеет формата")
             return False
-        if get_format_file(file_path) != file_format:
+        if get_format_file(file_path) not in file_format:
             print_error(f"Файл {file_path} не имеет нужный формат {file_format}")
             return False
     return True
