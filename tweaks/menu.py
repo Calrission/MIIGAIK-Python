@@ -1,10 +1,11 @@
 from sys import exit
 from typing import Callable
 
-from .directory import show_current_directory, change_directory, get_files, change_format_file, get_file_path, \
-    get_format_file, append_postfix_filename
-from .converter import convert_docx_to_pdf, convert_pdf_to_docx
 from .compressor import compress
+from .converter import convert_docx_to_pdf, convert_pdf_to_docx
+from .directory import show_current_directory, change_directory, get_files, change_format_file, get_file_path, \
+    append_postfix_filename, get_format_file, remove_format
+from os import remove
 
 
 def item_menu_change_current_directory():
@@ -54,7 +55,43 @@ def item_menu_compress_image():
 
 
 def item_menu_delete_group_files():
-    pass
+    files = get_files([])
+    if len(files) == 0:
+        print("Файлы в текущей директории отсутствуют!")
+        return
+
+    def delete_file_substring(validation_fun):
+        substring = input("Введите подстроку: ").lower()
+        target_files = [file for file in files if validation_fun(remove_format(file.lower()), substring)]
+        if len(target_files) == 0:
+            print("Файлов на удаление не найдено!")
+            return
+        delete_files(target_files)
+
+    def delete_file_format():
+        format_file = input("Введите формат файлов: ")
+        target_files = [file for file in files if get_format_file(file) == format_file]
+        delete_files(target_files)
+
+    def delete_files(target_files: list[str]):
+        for file in target_files:
+            path_file = get_file_path(file)
+            remove(path_file)
+        print(f"{'Файл удален:' if len(target_files) == 1 else 'Файлы удалены:'} {target_files}")
+
+    menu_delete = {
+        "Удалить все файлы начинающиеся на определенную подстроку":
+            lambda: delete_file_substring(lambda file, substring: file.startswith(substring)),
+        "Удалить все файлы заканчивающиеся на определенную подстроку":
+            lambda: delete_file_substring(lambda file, substring: file.endswith(substring)),
+        "Удалить все файлы содержащиеся определенную подстроку":
+            lambda file, substring: substring in file,
+        "Удалить все файлы по расширению": delete_file_format,
+    }
+
+    show_menu(menu_delete)
+    func_item_menu, _ = safe_choose_item_menu(menu_delete)
+    func_item_menu()
 
 
 def choose_file(fun, files: list[str], formats: list[str]):

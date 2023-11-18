@@ -31,6 +31,10 @@ def get_format_file(file: str) -> str:
     return file[file.rfind(".") + 1:]
 
 
+def remove_format(file: str) -> str:
+    return file[:file.rfind(".")]
+
+
 def change_format_file(file: str, new_format: str) -> str:
     return file[:file.rfind(".") + 1] + new_format
 
