@@ -150,7 +150,7 @@ def show_main_menu():
 
 def show_menu(local_menu: dict):
     """
-    Показать меню
+    Показать переданное меню
     :param local_menu: меню в виде словаря 
     """
     print("-" * 15 + "МЕНЮ" + "-" * 15)
