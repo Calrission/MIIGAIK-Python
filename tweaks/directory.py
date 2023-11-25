@@ -2,6 +2,8 @@ from os.path import isdir, isfile, exists
 from os import listdir
 from sys import platform
 
+from tweaks.error import MessageException
+
 is_linux = platform == "linux"
 slash_platform = "\\" if "win" in platform.lower() else "/"
 current_directory = slash_platform.join(__file__.split(slash_platform)[:-1])
@@ -100,16 +102,17 @@ def get_file_path(filename: str):
     return f"{current_directory}{slash_platform}{filename}"
 
 
-def get_files(format_file: list) -> list[str]:
+def get_files(format_file: list, do_raise=True) -> list[str]:
     """
     Получение списка файлов определенного расширения из текущей рабочий директории
+    :param do_raise: выводить ли ошибки
     :param format_file: Список расширений
     :return: список файлов
     """
     files = listdir(current_directory)
     return [
         file for file in files
-        if is_valid_file(f"{current_directory}{slash_platform}{file}", format_file, False)
+        if is_valid_file(f"{current_directory}{slash_platform}{file}", format_file, do_raise)
     ]
 
 
@@ -120,38 +123,37 @@ def is_valid_directory(directory_path: str) -> bool:
     :return: существует ли путь и указывает ли он на папку
     """
     if not is_exist(directory_path):
-        print(f"Ошибка! Директория {directory_path} не найдена")
-        return False
+        raise MessageException(f"Ошибка! Директория {directory_path} не найдена")
     if not is_dir(directory_path):
-        print(f"Ошибка! Путь {directory_path} указывает не на директорию")
-        return False
+        raise MessageException(f"Ошибка! Путь {directory_path} указывает не на директорию")
     return True
 
 
-def is_valid_file(file_path: str, file_format: list, show_errors: bool = True) -> bool:
+def is_valid_file(file_path: str, file_format: list, do_raise: bool = True) -> bool:
     """
     Проверка на то, существует ли путь, указывает ли он на файл определенного формата
+    :param do_raise: выдавать ли ошибки
     :param file_path: путь для проверки
     :param file_format: список расширений
-    :param show_errors: показывать ли ошибки
     :return: существует ли путь, указывает ли он на файл определенного формата
     """
-    def print_error(*errors):
-        if show_errors:
-            print(*errors)
 
     if not is_exist(file_path):
-        print_error(f"Ошибка! Файл {file_path} не найдена")
+        if do_raise:
+            raise MessageException(f"Ошибка! Файл {file_path} не найден")
         return False
     if not is_file(file_path):
-        print_error(f"Ошибка! Путь {file_path} указывает не на файл")
+        if do_raise:
+            raise MessageException(f"Ошибка! Путь {file_path} указывает не на файл")
         return False
     if len(file_format) != 0:
         if not is_exist_format_file(file_path):
-            print_error(f"Файл {file_path} не имеет формата")
+            if do_raise:
+                raise MessageException(f"Файл {file_path} не имеет формата")
             return False
         if get_format_file(file_path) not in file_format:
-            print_error(f"Файл {file_path} не имеет нужный формат {file_format}")
+            if do_raise:
+                raise MessageException(f"Файл {file_path} не имеет нужный формат {file_format}")
             return False
     return True
 
@@ -167,3 +169,4 @@ def change_directory(new_directory: str) -> bool:
         return False
 
     current_directory = new_directory
+    return True
