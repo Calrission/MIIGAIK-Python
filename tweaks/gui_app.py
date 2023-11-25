@@ -41,6 +41,11 @@ def run_gui():
                     new_file = append_postfix_file(choose_file, "_compress")
                     compress(choose_file, new_file)
                     sg.Popup(f"Готово, файл создан {new_file}")
-
+        elif event == menu_items[4]:
+            files = show_delete_many_files_window()
+            for file in files:
+                path_file = get_file_path(file)
+                remove(path_file)
+            sg.PopupOK(f"Удалено файлов: {len(files)}")
 
     window.close()

@@ -1,3 +1,5 @@
+from os import remove
+
 import PySimpleGUI as sg
 
 from tweaks.directory import *
@@ -54,7 +56,7 @@ def show_set_quality_window() -> int | None:
         [sg.Slider(range=(0, 100), orientation="h", key="SLIDER", enable_events=True)],
         [sg.Button("Отменить"), sg.Button("Потвердеть")]
     ]
-    window = sg.Window("Choose Quality", layout, size=(300, 200))
+    window = sg.Window("Choose Quality", layout)
     value = 0
     while True:
         event, values = window.read()
@@ -68,4 +70,92 @@ def show_set_quality_window() -> int | None:
             return value
 
 
+def show_input_substring() -> str | None:
+    layout = [
+        [sg.Text("Введите подстроку")],
+        [sg.Input(key="SUBSTRING")],
+        [sg.Button("Потвердеть")]
+    ]
+    window = sg.Window("Input substring", layout, size=(300, 100))
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            window.close()
+            return None
+        elif event == "Потвердеть":
+            substring = values["SUBSTRING"]
+            if substring == "":
+                sg.PopupOK("Введите подстроку")
+            else:
+                return substring
 
+
+def show_input_format() -> str | None:
+    layout = [
+        [sg.Text("Введите расширение")],
+        [sg.Input(key="SUBSTRING")],
+        [sg.Button("Потвердеть")]
+    ]
+    window = sg.Window("Input substring", layout, size=(300, 100))
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            window.close()
+            return None
+        elif event == "Потвердеть":
+            substring = values["SUBSTRING"]
+            if substring == "":
+                sg.PopupOK("Введите подстроку")
+            else:
+                return substring
+
+
+def show_delete_many_files_window():
+    items = ["Удалить все файлы начинающиеся на определенную подстроку",
+             "Удалить все файлы заканчивающиеся на определенную подстроку",
+             "Удалить все файлы содержащиеся определенную подстроку",
+             "Удалить все файлы по расширению"]
+    layout = [
+        [sg.Button(item)] for item in items
+    ]
+    window = sg.Window("Choose Category delete", layout, size=(500, 200))
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            window.close()
+            return
+        elif event == items[0]:
+            substring = show_input_substring()
+            all_files = get_files([])
+            need_files = [get_file_path(file) for file in all_files if file.lower().startswith(substring.lower())]
+            result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
+            if result == "OK":
+                return need_files
+            else:
+                return None
+        elif event == items[1]:
+            substring = show_input_substring()
+            all_files = get_files([])
+            need_files = [get_file_path(file) for file in all_files if file.lower().endswith(substring.lower())]
+            result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
+            if result == "OK":
+                return need_files
+            else:
+                return None
+        elif event == items[2]:
+            substring = show_input_substring()
+            all_files = get_files([])
+            need_files = [get_file_path(file) for file in all_files if substring.lower() in file.lower()]
+            result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
+            if result == "OK":
+                return need_files
+            else:
+                return None
+        elif event == items[3]:
+            format_file = show_input_format()
+            need_files = get_files([format_file])
+            result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
+            if result == "OK":
+                return need_files
+            else:
+                return None
