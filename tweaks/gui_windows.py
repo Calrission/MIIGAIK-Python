@@ -87,6 +87,7 @@ def show_input_substring() -> str | None:
             if substring == "":
                 sg.PopupOK("Введите подстроку")
             else:
+                window.close()
                 return substring
 
 
@@ -107,6 +108,7 @@ def show_input_format() -> str | None:
             if substring == "":
                 sg.PopupOK("Введите подстроку")
             else:
+                window.close()
                 return substring
 
 
@@ -126,36 +128,48 @@ def show_delete_many_files_window():
             return
         elif event == items[0]:
             substring = show_input_substring()
+            if substring is None:
+                continue
             all_files = get_files([], do_raise=False)
             need_files = [get_file_path(file) for file in all_files if file.lower().startswith(substring.lower())]
             result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
             if result == "OK":
+                window.close()
                 return need_files
             else:
                 return None
         elif event == items[1]:
             substring = show_input_substring()
+            if substring is None:
+                continue
             all_files = get_files([], do_raise=False)
             need_files = [get_file_path(file) for file in all_files if file.lower().endswith(substring.lower())]
             result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
             if result == "OK":
+                window.close()
                 return need_files
             else:
                 return None
         elif event == items[2]:
             substring = show_input_substring()
+            if substring is None:
+                continue
             all_files = get_files([], do_raise=False)
             need_files = [get_file_path(file) for file in all_files if substring.lower() in file.lower()]
             result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
             if result == "OK":
+                window.close()
                 return need_files
             else:
                 return None
         elif event == items[3]:
             format_file = show_input_format()
+            if format_file is None:
+                continue
             need_files = get_files([format_file], do_raise=False)
             result = sg.PopupOKCancel(f"Будут удалены {len(need_files)} шт. файлов")
             if result == "OK":
+                window.close()
                 return need_files
             else:
                 return None
