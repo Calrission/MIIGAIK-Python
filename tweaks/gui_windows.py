@@ -1,7 +1,4 @@
-from os import remove
-
 import PySimpleGUI as sg
-
 from tweaks.directory import *
 from tweaks.error import MessageException
 
