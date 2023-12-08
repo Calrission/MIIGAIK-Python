@@ -5,8 +5,9 @@ from sys import platform
 from tweaks.error import MessageException
 
 is_linux = platform == "linux"
-slash_platform = "\\" if "win" in platform.lower() else "/"
-current_directory = slash_platform.join(__file__.split(slash_platform)[:-2])
+split_slash_platform = "\\" if "win" in platform.lower() else "/"
+slash_platform = "/"
+current_directory = slash_platform.join(__file__.split(split_slash_platform)[:-2])
 
 
 def show_current_directory():

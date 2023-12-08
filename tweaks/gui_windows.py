@@ -9,7 +9,7 @@ from tweaks.error import MessageException
 def show_change_directory_window() -> str | None:
     layout = [
         [sg.Text("Выберите новую рабочую директорию: ")],
-        [sg.Input(default_text="Выберите папку", disabled=True), sg.FolderBrowse(key="PATH")],
+        [sg.Input(default_text=current_directory, disabled=True), sg.FolderBrowse(key="PATH", initial_folder=current_directory)],
         [sg.Button("Отмена"), sg.Button("Потвердеть")]
     ]
     window = sg.Window("Change Directory", layout)
@@ -25,7 +25,7 @@ def show_change_directory_window() -> str | None:
                 window.close()
                 return new_directory
             except MessageException as e:
-                sg.Popup(e.args[0], keep_on_top=True, title="Ошибка")
+                sg.Popup(e.message, keep_on_top=True, title="Ошибка")
 
 
 def show_choose_file(formats: list[str]) -> str | None:
@@ -45,9 +45,10 @@ def show_choose_file(formats: list[str]) -> str | None:
             window.close()
             return None
         elif "CHOOSE" in event:
-            file = event.split(" ")[1]
+            file = event.replace("CHOOSE ", "")
             window.close()
-            return get_file_path(file)
+            file_path = get_file_path(file)
+            return file_path
 
 
 def show_set_quality_window() -> int | None:
