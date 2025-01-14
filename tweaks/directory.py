@@ -103,7 +103,7 @@ def get_file_path(filename: str):
     return f"{current_directory}{slash_platform}{filename}"
 
 
-def get_files(format_file: list, do_raise=True) -> list[str]:
+def get_files(format_file: list, do_raise=False) -> list[str]:
     """
     Получение списка файлов определенного расширения из текущей рабочий директории
     :param do_raise: выводить ли ошибки
@@ -130,7 +130,7 @@ def is_valid_directory(directory_path: str) -> bool:
     return True
 
 
-def is_valid_file(file_path: str, file_format: list, do_raise: bool = True) -> bool:
+def is_valid_file(file_path: str, file_format: list, do_raise: bool = False) -> bool:
     """
     Проверка на то, существует ли путь, указывает ли он на файл определенного формата
     :param do_raise: выдавать ли ошибки

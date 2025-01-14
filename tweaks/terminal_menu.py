@@ -111,7 +111,7 @@ def item_menu_delete_group_files():
         "Удалить все файлы заканчивающиеся на определенную подстроку":
             lambda: delete_file_substring(lambda file, substring: file.endswith(substring)),
         "Удалить все файлы содержащиеся определенную подстроку":
-            lambda file, substring: substring in file,
+            lambda: delete_file_substring(lambda file, substring: substring in file),
         "Удалить все файлы по расширению": delete_file_format,
     }
 
