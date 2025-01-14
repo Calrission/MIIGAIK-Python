@@ -2,8 +2,6 @@ from os.path import isdir, isfile, exists
 from os import listdir
 from sys import platform
 
-from tweaks.error import MessageException
-
 is_linux = platform == "linux"
 split_slash_platform = "\\" if "win" in platform.lower() else "/"
 slash_platform = "/"
@@ -124,9 +122,9 @@ def is_valid_directory(directory_path: str) -> bool:
     :return: существует ли путь и указывает ли он на папку
     """
     if not is_exist(directory_path):
-        raise MessageException(f"Ошибка! Директория {directory_path} не найдена")
+        raise Exception(f"Ошибка! Директория {directory_path} не найдена")
     if not is_dir(directory_path):
-        raise MessageException(f"Ошибка! Путь {directory_path} указывает не на директорию")
+        raise Exception(f"Ошибка! Путь {directory_path} указывает не на директорию")
     return True
 
 
@@ -141,20 +139,20 @@ def is_valid_file(file_path: str, file_format: list, do_raise: bool = False) -> 
 
     if not is_exist(file_path):
         if do_raise:
-            raise MessageException(f"Ошибка! Файл {file_path} не найден")
+            raise Exception(f"Ошибка! Файл {file_path} не найден")
         return False
     if not is_file(file_path):
         if do_raise:
-            raise MessageException(f"Ошибка! Путь {file_path} указывает не на файл")
+            raise Exception(f"Ошибка! Путь {file_path} указывает не на файл")
         return False
     if len(file_format) != 0:
         if not is_exist_format_file(file_path):
             if do_raise:
-                raise MessageException(f"Файл {file_path} не имеет формата")
+                raise Exception(f"Файл {file_path} не имеет формата")
             return False
         if get_format_file(file_path) not in file_format:
             if do_raise:
-                raise MessageException(f"Файл {file_path} не имеет нужный формат {file_format}")
+                raise Exception(f"Файл {file_path} не имеет нужный формат {file_format}")
             return False
     return True
 
